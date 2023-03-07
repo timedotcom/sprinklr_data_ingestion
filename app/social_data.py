@@ -70,6 +70,8 @@ class ProceedSocialData:
                         "advertiser_outbound_message",
                         "magazine_outbound_message",
                         "evergreen_outbound_message",
+                        "actual_link"
+            
                     ]
                     for i in lower_case_column:
                         df[i] = df[i].apply(
