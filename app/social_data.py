@@ -148,7 +148,8 @@ class ProceedSocialData:
                             if_exists="append",
                         )
                     except Exception as e:
-                        print("ingested rows not completed ")
+                        logger.erro("ingested rows not completed ")
+                        raise e
                     page_number += 1
                 else:
                     # todo

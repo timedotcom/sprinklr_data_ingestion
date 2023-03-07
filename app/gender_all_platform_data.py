@@ -26,8 +26,8 @@ class ProceedGenderAllPlatform:
 
     def ingest_gender_all_platform_data(self):
         logger.info("Processing.....gender_all_platform")
-        destination_table = "sprinklr_src.gender_all_platform"
-        temp_table = "sprinklr_src.gender_all_platform_temp"
+        destination_table = "sprinklr_src.gender_all_platforms"
+        temp_table = "sprinklr_src.gender_all_platforms_temp"
         row_status = True
         page_number = 0
         payload = {

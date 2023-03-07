@@ -26,8 +26,8 @@ class ProceedAgeAllPlatform:
 
     def ingest_age_all_platform_data(self):
         logger.info("Processing.....age_all_platform")
-        destination_table = "sprinklr_src.age_all_platform"
-        temp_table = "sprinklr_src.age_all_platform_temp"
+        destination_table = "sprinklr_src.age_all_platforms"
+        temp_table = "sprinklr_src.age_all_platforms_temp"
         row_status = True
         page_number = 0
         payload = {
@@ -41,7 +41,6 @@ class ProceedAgeAllPlatform:
             sprinklr_response = requests.post(
                 url=api_url, headers=self.header, data=json.dumps(sprinklr_payload)
             )
-            print(sprinklr_response)
             if sprinklr_response.status_code == 200:
                 sprinklr_data = sprinklr_response.json()
                 if "rows" in sprinklr_data:
@@ -80,4 +79,3 @@ class ProceedAgeAllPlatform:
                     row_status = False
 
         check_and_update_table(self.project_id, temp_table, destination_table)
-
