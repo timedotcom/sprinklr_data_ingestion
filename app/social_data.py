@@ -55,7 +55,7 @@ class ProceedSocialData:
         }
         while row_status:
             report_payload = dict(payload, **social_data_payload)
-            page = {"page": page_number, "pageSize": 1000}
+            page = {"page": page_number, "pageSize": 500}
             sprinklr_payload = {**report_payload, **page}
             sprinklr_response = requests.post(
                 url=api_url, headers=self.header, data=json.dumps(sprinklr_payload)

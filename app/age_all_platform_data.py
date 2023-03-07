@@ -67,7 +67,7 @@ class ProceedAgeAllPlatform:
 
                     df.to_gbq(
                         temp_table,
-                        project_id="dev-time-data",
+                        project_id=self.project_id,
                         table_schema=age_all_platform_schema,
                         if_exists="append",
                     )
