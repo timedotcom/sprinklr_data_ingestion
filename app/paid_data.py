@@ -46,7 +46,7 @@ class ProceedPaidData:
             if sprinklr_response.status_code == 200:
                 sprinklr_data = sprinklr_response.json()
                 if "rows" in sprinklr_data:
-                    print("row exist in sprinklr data of page {}".format(page_number))
+                    logger.info("row exist in sprinklr data of page {page_number}".format(page_number))
                     df = pd.DataFrame(sprinklr_data["rows"], columns=paid_data_columns)
                     df["paid_initiative_name"] = pd.json_normalize(
                         df["paid_initiative_name"]
@@ -86,11 +86,15 @@ class ProceedPaidData:
                         table_schema=paid_schema,
                         if_exists="append",
                     )
-                    print("ingested rows completed ")
+                    logger.info(
+                        "ingested rows completed of page {page_number}".format(
+                            page_number
+                        )
+                    )
                     page_number += 1
                 else:
-                    print(
-                        "Sprinklr table has not more datas with given time at page {}".format(
+                    logger.info(
+                        "Sprinklr table has not more datas with given time at page {page_number}".format(
                             page_number
                         )
                     )
