@@ -5,9 +5,7 @@ from google.cloud import bigquery
 import os
 import google.auth
 
-# os.environ[
-#     "GOOGLE_APPLICATION_CREDENTIALS"
-# ] = "/home/fm-pc-lt-186/Downloads/dev-time-data-6aae04b32851.json"
+
 
 credentials, project_id = google.auth.default(
     scopes=["https://www.googleapis.com/auth/cloud-platform"]
@@ -38,7 +36,7 @@ def check_and_update_table(project_id, temp_table, destination_table):
     current_date = datetime.strptime(str(datetime.now()), "%Y-%m-%d %H:%M:%S.%f")
 
     if current_date.date() == table_modified_date.date():
-        print("temp table updated today")
+        logger.info("temp table updated today")
 
         run_query_bq(project_id, temp_table, destination_table)
 

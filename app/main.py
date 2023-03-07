@@ -19,9 +19,6 @@ from .paid_data import ProceedPaidData
 from .age_all_platform_data import ProceedAgeAllPlatform
 from .gender_all_platform_data import ProceedGenderAllPlatform
 
-# os.environ[
-#     "GOOGLE_APPLICATION_CREDENTIALS"
-# ] = "/home/fm-pc-lt-186/Downloads/dev-time-data-6aae04b32851.json"
 
 credentials, project_id = google.auth.default(
     scopes=["https://www.googleapis.com/auth/cloud-platform"]
@@ -54,8 +51,8 @@ def ingest_sprinklr_data():
     api_key = creds["api_key"]
     start_time = f"{start_day_epoch_time}000"
     end_time = f"{current_day_epoch_time}000"
-    print(start_time)
-    print(end_time)
+    logger.info(start_time)
+    logger.info(end_time)
     header = {
         "Content-Type": "application/json",
         "key": api_key,
