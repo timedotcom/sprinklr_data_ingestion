@@ -24,23 +24,6 @@ class ProceedSocialData:
         self.project_id = project_id
         self.bq_client = bq_client
 
-    # def check_and_update_table(self, temp_table, destination_table):
-    #     bq_table = self.bq_client.get_table(
-    #         self.project_id + "." + temp_table
-    #     )
-    #     table_modified_date = datetime.strptime(
-    #         str(bq_table.modified), "%Y-%m-%d %H:%M:%S.%f%z"
-    #     )
-    #     current_date = datetime.strptime(str(datetime.now()), "%Y-%m-%d %H:%M:%S.%f")
-
-    #     if current_date.date() == table_modified_date.date():
-    #         print("temp table updated today")
-
-    #         run_query_bq(self.project_id, temp_table, destination_table)
-
-    #     else:
-    #         print("not created temp table")
-
     def ingest_social_data(self):
         logger.info("Processing.....social_data")
         destination_table = "sprinklr_src.social_data"
@@ -148,12 +131,10 @@ class ProceedSocialData:
                             if_exists="append",
                         )
                     except Exception as e:
-                        logger.erro("ingested rows not completed ")
+                        logger.error("ingested rows not completed ")
                         raise e
                     page_number += 1
                 else:
-                    # todo
-                    # log to bq
                     logger.info(
                         f"Sprinklr table has not more datas with given time at page {page_number}"
                     )
