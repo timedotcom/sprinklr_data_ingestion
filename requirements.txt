@@ -6,7 +6,7 @@ google-cloud-storage==1.37.1
 google-cloud-secret-manager==2.0.0
 pandas_gbq==0.19.1
 pyarrow==2.0.0
-pandas==1.5.3
+pandas==1.4.4
 numpy
 Flask
 gunicorn
