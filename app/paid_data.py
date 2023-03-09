@@ -46,7 +46,11 @@ class ProceedPaidData:
             if sprinklr_response.status_code == 200:
                 sprinklr_data = sprinklr_response.json()
                 if "rows" in sprinklr_data:
-                    logger.info("row exist in sprinklr data of page {page_number}".format(page_number))
+                    logger.info(
+                        "row exist in sprinklr data of page {page_number}".format(
+                            page_number
+                        )
+                    )
                     df = pd.DataFrame(sprinklr_data["rows"], columns=paid_data_columns)
                     df["paid_initiative_name"] = pd.json_normalize(
                         df["paid_initiative_name"]
@@ -58,6 +62,14 @@ class ProceedPaidData:
                     df["paid_initative_end_date"] = pd.to_datetime(
                         df["paid_initative_end_date"], errors="coerce"
                     )
+                    df["date"] = df["date"].apply(
+                        lambda x: datetime.fromtimestamp(
+                            int(x) / 1000, pytz.timezone("America/New_York")
+                        ).strftime("%Y-%m-%d %H:%M:%S")
+                        if pd.notnull(x)
+                        else x
+                    )
+                    df["date"] = pd.to_datetime(df["date"], errors="coerce")
                     lower_case_column = [
                         "creative_headline",
                         "outbound_message_tags",

@@ -52,6 +52,7 @@ social_schema = [
 
 paid_schema = [
     {"name": "post_promotion_start_date", "type": "TIMESTAMP"},
+    {"name": "date", "type": "TIMESTAMP"},
     {"name": "channel", "type": "STRING"},
     {"name": "paid_initiative_name", "type": "STRING"},
     {"name": "creative_headline", "type": "STRING"},
@@ -138,6 +139,7 @@ social_data_columns = [
 
 paid_data_columns = [
     "post_promotion_start_date",
+    "date",
     "channel",
     "paid_initiative_name",
     "ad_variant_id",
@@ -171,13 +173,13 @@ age_all_platform_columns = [
 ]
 
 
-age_all_platform_schema = [{'name': 'audience_age', 'type': 'STRING'},
- {'name': 'paid_initiative_name', 'type': 'STRING'},
- {'name': 'impressions', 'type': 'INTEGER'},
- {'name': 'acm_global_link_clicks', 'type': 'INTEGER'},
- {'name': 'acm_global_video_views', 'type': 'INTEGER'}
-         ]
-
+age_all_platform_schema = [
+    {"name": "audience_age", "type": "STRING"},
+    {"name": "paid_initiative_name", "type": "STRING"},
+    {"name": "impressions", "type": "INTEGER"},
+    {"name": "acm_global_link_clicks", "type": "INTEGER"},
+    {"name": "acm_global_video_views", "type": "INTEGER"},
+]
 
 
 age_all_platform_payload = {
@@ -355,6 +357,16 @@ paid_data_payload = {
         },
         {
             "heading": "OUTBOUND_CUSTOM_PROPERTY_6",
+            "dimensionName": "OUTBOUND_CUSTOM_PROPERTY",
+            "groupType": "FIELD",
+            "details": {
+                "srcType": "CUSTOM",
+                "fieldName": "_TAGS",
+                "isSecureField": False,
+            },
+        },
+        {
+            "heading": "OUTBOUND_CUSTOM_PROPERTY_7",
             "dimensionName": "OUTBOUND_CUSTOM_PROPERTY",
             "groupType": "FIELD",
             "details": {
