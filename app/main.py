@@ -51,8 +51,8 @@ def ingest_sprinklr_data():
     api_key = creds["api_key"]
     start_time = f"{start_day_epoch_time}000"
     end_time = f"{current_day_epoch_time}000"
-    logger.info("start time {start_time}".format(start_time))
-    logger.info("end time {end_time}".format(end_time))
+    logger.info("start time {start_time}".format(start_time= start_time))
+    logger.info("end time {end_time}".format(end_time=end_time))
     header = {
         "Content-Type": "application/json",
         "key": api_key,
