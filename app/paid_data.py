@@ -48,7 +48,7 @@ class ProceedPaidData:
                 if "rows" in sprinklr_data:
                     logger.info(
                         "row exist in sprinklr data of page {page_number}".format(
-                            page_number
+                            page_number=page_number
                         )
                     )
                     df = pd.DataFrame(sprinklr_data["rows"], columns=paid_data_columns)
@@ -100,14 +100,14 @@ class ProceedPaidData:
                     )
                     logger.info(
                         "ingested rows completed of page {page_number}".format(
-                            page_number
+                            page_number=page_number
                         )
                     )
                     page_number += 1
                 else:
                     logger.info(
                         "Sprinklr table has not more datas with given time at page {page_number}".format(
-                            page_number
+                            page_number=page_number
                         )
                     )
                     row_status = False

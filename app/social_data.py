@@ -46,7 +46,7 @@ class ProceedSocialData:
             if sprinklr_response.status_code == 200:
                 sprinklr_data = sprinklr_response.json()
                 if "rows" in sprinklr_data:
-                    logger.info(f"row exist in sprinklr data of page {page_number}")
+                    logger.info(f"row exist in sprinklr data of page {page_number}".format(page_number=page_number))
                     df = pd.DataFrame(
                         sprinklr_data["rows"], columns=social_data_columns
                     )
@@ -70,8 +70,7 @@ class ProceedSocialData:
                         "advertiser_outbound_message",
                         "magazine_outbound_message",
                         "evergreen_outbound_message",
-                        "actual_link"
-            
+                        "actual_link",
                     ]
                     for i in lower_case_column:
                         df[i] = df[i].apply(
@@ -138,7 +137,9 @@ class ProceedSocialData:
                     page_number += 1
                 else:
                     logger.info(
-                        f"Sprinklr table has not more datas with given time at page {page_number}"
+                        f"Sprinklr table has not more datas with given time at page {page_number}".format(
+                            page_number=page_number
+                        )
                     )
                     row_status = False
             else:

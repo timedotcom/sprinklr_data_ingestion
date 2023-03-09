@@ -44,7 +44,11 @@ class ProceedGenderAllPlatform:
             if sprinklr_response.status_code == 200:
                 sprinklr_data = sprinklr_response.json()
                 if "rows" in sprinklr_data:
-                    print(f"row exist in sprinklr data of page {page_number}")
+                    print(
+                        f"row exist in sprinklr data of page {page_number}".format(
+                            page_number=page_number
+                        )
+                    )
                     df = pd.DataFrame(
                         sprinklr_data["rows"], columns=gender_all_platform_columns
                     )
@@ -72,7 +76,7 @@ class ProceedGenderAllPlatform:
                     page_number += 1
                 else:
                     print(
-                        f"Sprinklr table has not more datas with given time at page {page_number}"
+                        f"Sprinklr table has not more datas with given time at page {page_number}".format(page_number=page_number)
                     )
                     row_status = False
 
