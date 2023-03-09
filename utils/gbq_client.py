@@ -6,12 +6,34 @@ import os
 import google.auth
 
 
-
 credentials, project_id = google.auth.default(
     scopes=["https://www.googleapis.com/auth/cloud-platform"]
 )
 logger = logging.getLogger("SPRINKLR INGESTION")
 bq_client = bigquery.Client()
+
+
+def dedup_socail_data(project_id, temp_table):
+    query = """
+            create or replace table `{project_id}.{temp_table}` as
+
+                with table_1 as(
+                SELECT 
+                *,
+                row_number() over(partition by post_id, social_network order by post_published_date desc) as rn
+
+
+
+                FROM `{project_id}.{temp_table}` )
+
+                select * except(rn) from table_1 where rn = 1
+                    
+                    """.format(
+        project_id=project_id, temp_table=temp_table
+    )
+    query_updated = bq_client.query(query)
+    if not list(query_updated.result()):
+        logger.info("successfully dedup social table...")
 
 
 def run_query_bq(project_id, temp_table, destination_table):
@@ -37,6 +59,9 @@ def check_and_update_table(project_id, temp_table, destination_table):
 
     if current_date.date() == table_modified_date.date():
         logger.info("temp table updated today")
+
+        if temp_table == "sprinklr_src.social_data_temp":
+            dedup_socail_data(project_id, temp_table)
 
         run_query_bq(project_id, temp_table, destination_table)
 
