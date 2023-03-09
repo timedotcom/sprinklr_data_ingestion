@@ -314,7 +314,7 @@ paid_data_payload = {
         {
             "dimensionName": "clientId",
             "filterType": "IN",
-            "values": [8691, "-1", "-1"],
+            "values": [8691, "-1"],
             "details": {"accessible": True},
         }
     ],
@@ -326,44 +326,40 @@ paid_data_payload = {
             "details": {},
         },
         {
-            "heading": "adChannel_1",
+            "heading": "measurementTime_1",
+            "dimensionName": "measurementTime",
+            "groupType": "DATE_HISTOGRAM",
+            "details": {"isDateTypeDimension": True, "interval": "1h"},
+        },
+        {
+            "heading": "adChannel_2",
             "dimensionName": "adChannel",
             "groupType": "FIELD",
             "details": {},
         },
         {
-            "heading": "paidInitiativeId_2",
+            "heading": "paidInitiativeId_3",
             "dimensionName": "paidInitiativeId",
             "groupType": "FIELD",
             "details": {},
         },
         {
-            "heading": "adVariantSprinklrId_3",
+            "heading": "adVariantSprinklrId_4",
             "dimensionName": "adVariantSprinklrId",
             "groupType": "FIELD",
             "details": {},
         },
         {
-            "heading": "adVariantId_4",
+            "heading": "adVariantId_5",
             "dimensionName": "adVariantId",
             "groupType": "FIELD",
             "details": {},
         },
         {
-            "heading": "pivotHeadline_5",
+            "heading": "pivotHeadline_6",
             "dimensionName": "pivotHeadline",
             "groupType": "FIELD",
             "details": {},
-        },
-        {
-            "heading": "OUTBOUND_CUSTOM_PROPERTY_6",
-            "dimensionName": "OUTBOUND_CUSTOM_PROPERTY",
-            "groupType": "FIELD",
-            "details": {
-                "srcType": "CUSTOM",
-                "fieldName": "_TAGS",
-                "isSecureField": False,
-            },
         },
         {
             "heading": "OUTBOUND_CUSTOM_PROPERTY_7",
@@ -419,7 +415,7 @@ paid_data_payload = {
         },
     ],
     "projectionDecorations": [],
-    "sorts": [{"heading": "paidInitiativeId_2", "order": "DESC"}],
+    "sorts": [{"heading": "paidInitiativeId_3", "order": "DESC"}],
     "additional": {
         "Timezone": "America/New_York",
         "dashboardWidget": "true",
