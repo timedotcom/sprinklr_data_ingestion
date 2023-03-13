@@ -35,18 +35,17 @@ creds = download_creds("sprinklr", 1)
 @app.route("/run", methods=["POST"])
 def ingest_sprinklr_data():
     logger.info("starting.....")
-    current_day_epoch_time = int(
-        time.mktime(
-            datetime.datetime.now(timezone)
-            .replace(hour=23, minute=59, second=0, microsecond=0)
-            .timetuple()
-        )
-    )
+    
+    current_day = datetime.datetime.now(timezone)
+    target_time = datetime.time(hour=23, minute=59, second=0, microsecond=0)
+    target_datetime = datetime.datetime.combine(current_day, target_time)
+
+    current_day_epoch_time = int(target_datetime.timestamp())
     # for startting time we are pulling last 6 moth data so delta days here 180
     start_day = (
         datetime.datetime.now(timezone) - datetime.timedelta(days=180)
     ).replace(hour=0, minute=0, second=0, microsecond=0)
-    start_day_epoch_time = int(time.mktime(start_day.timetuple()))
+    start_day_epoch_time = int(start_day.timestamp())
 
     api_token = creds["api_token"]
     api_key = creds["api_key"]
