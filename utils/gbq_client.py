@@ -36,6 +36,29 @@ def dedup_socail_data(project_id, temp_table):
         logger.info("successfully dedup social table...")
 
 
+def dedup_paid_data(project_id, temp_table):
+    query = """
+            create or replace table `{project_id}.{temp_table}` as
+
+                with table_1 as(
+                SELECT 
+                *,
+                row_number() over(PARTITION BY channel, ad_variant_id, paid_initiative_name, date, outbound_message_tags, impressions) as rn
+
+
+
+                FROM `{project_id}.{temp_table}` )
+
+                select * except(rn) from table_1 where rn = 1
+                    
+                    """.format(
+        project_id=project_id, temp_table=temp_table
+    )
+    query_updated = bq_client.query(query)
+    if not list(query_updated.result()):
+        logger.info("successfully dedup social table...")
+
+
 def run_query_bq(project_id, temp_table, destination_table):
     query = """create or replace table `{project_id}.{destination_table}` OPTIONS(description = "sprinklr data from sprinklr API", labels=[("resource-creator","santosh_silwal"),("pipeline","sprinklr"),("stage","raw")]) as SELECT * FROM `{project_id}.{source_table}` """.format(
         project_id=project_id,
@@ -62,6 +85,9 @@ def check_and_update_table(project_id, temp_table, destination_table):
 
         if temp_table == "sprinklr_src.social_data_temp":
             dedup_socail_data(project_id, temp_table)
+        
+        if temp_table == "sprinklr_src.paid_data_temp":
+           dedup_paid_data(project_id, temp_table)
 
         run_query_bq(project_id, temp_table, destination_table)
 
