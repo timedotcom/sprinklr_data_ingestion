@@ -35,7 +35,7 @@ creds = download_creds("sprinklr", 1)
 @app.route("/run", methods=["POST"])
 def ingest_sprinklr_data():
     logger.info("starting.....")
-    
+
     current_day = datetime.datetime.now(timezone)
     target_time = datetime.time(hour=23, minute=59, second=0, microsecond=0)
     target_datetime = datetime.datetime.combine(current_day, target_time)
@@ -60,32 +60,32 @@ def ingest_sprinklr_data():
         "startTime": start_time,
         "endTime": end_time,
     }
-    # try:
-    ProceedSocialData(
-        header, start_time, end_time, project_id, bq_client
-    ).ingest_social_data()
+    try:
+        ProceedSocialData(
+            header, start_time, end_time, project_id, bq_client
+        ).ingest_social_data()
 
-    ProceedPaidData(
-        header, start_time, end_time, project_id, bq_client
-    ).ingest_paid_data()
+        ProceedPaidData(
+            header, start_time, end_time, project_id, bq_client
+        ).ingest_paid_data()
 
-    ProceedAgeAllPlatform(
-        header, start_time, end_time, project_id, bq_client
-    ).ingest_age_all_platform_data()
+        ProceedAgeAllPlatform(
+            header, start_time, end_time, project_id, bq_client
+        ).ingest_age_all_platform_data()
 
-    ProceedGenderAllPlatform(
-        header, start_time, end_time, project_id, bq_client
-    ).ingest_gender_all_platform_data()
+        ProceedGenderAllPlatform(
+            header, start_time, end_time, project_id, bq_client
+        ).ingest_gender_all_platform_data()
 
-    return (
-        json.dumps({"success": True, "message": "ingest sprinklr data completed"}),
-        200,
-        {"ContentType": "application/json"},
-    )
-    # except Exception as e:
-    #     logger.error(f"Main Crashed. Error: {e}")
-    #     error_reporting_client.report_exception()
-    #     raise e
+        return (
+            json.dumps({"success": True, "message": "ingest sprinklr data completed"}),
+            200,
+            {"ContentType": "application/json"},
+        )
+    except Exception as e:
+        logger.error(f"Main Crashed. Error: {e}")
+        error_reporting_client.report_exception()
+        raise e
 
 
 @app.route("/success")

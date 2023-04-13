@@ -11,6 +11,9 @@ from utils.sprinklr_utils import (
 )
 from utils.utils import get_logger
 from utils.gbq_client import check_and_update_table
+from google.cloud import error_reporting
+
+error_reporting_client = error_reporting.Client(service="sprinklr_social_data_ingestion")
 
 
 logger = get_logger("INGEST_SOCIAL_DATA")
@@ -46,7 +49,11 @@ class ProceedSocialData:
             if sprinklr_response.status_code == 200:
                 sprinklr_data = sprinklr_response.json()
                 if "rows" in sprinklr_data:
-                    logger.info(f"row exist in sprinklr data of page {page_number}".format(page_number=page_number))
+                    logger.info(
+                        f"row exist in sprinklr data of page {page_number}".format(
+                            page_number=page_number
+                        )
+                    )
                     df = pd.DataFrame(
                         sprinklr_data["rows"], columns=social_data_columns
                     )
@@ -144,6 +151,9 @@ class ProceedSocialData:
                     row_status = False
             else:
                 logger.error("could not connect sprinklr api")
+                error_reporting_client.report_exception()
+                raise e
+                
 
         check_and_update_table(self.project_id, temp_table, destination_table)
         # check on log table if temp table then replace that table with main table and delete temp table
