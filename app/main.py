@@ -60,33 +60,32 @@ def ingest_sprinklr_data():
         "startTime": start_time,
         "endTime": end_time,
     }
-    # try:
-    print('testing')
-    ProceedSocialData(
-        header, start_time, end_time, project_id, bq_client
-    ).ingest_social_data()
+    try:
+        ProceedSocialData(
+            header, start_time, end_time, project_id, bq_client
+        ).ingest_social_data()
 
-    # ProceedPaidData(
-    #     header, start_time, end_time, project_id, bq_client
-    # ).ingest_paid_data()
+        ProceedPaidData(
+            header, start_time, end_time, project_id, bq_client
+        ).ingest_paid_data()
 
-    # ProceedAgeAllPlatform(
-    #     header, start_time, end_time, project_id, bq_client
-    # ).ingest_age_all_platform_data()
+        ProceedAgeAllPlatform(
+            header, start_time, end_time, project_id, bq_client
+        ).ingest_age_all_platform_data()
 
-    # ProceedGenderAllPlatform(
-    #     header, start_time, end_time, project_id, bq_client
-    # ).ingest_gender_all_platform_data()
+        ProceedGenderAllPlatform(
+            header, start_time, end_time, project_id, bq_client
+        ).ingest_gender_all_platform_data()
 
-    return (
-        json.dumps({"success": True, "message": "ingest sprinklr data completed"}),
-        200,
-        {"ContentType": "application/json"},
-    )
-    # except Exception as e:
-    #     logger.error(f"Main Crashed. Error: {e}")
-    #     error_reporting_client.report_exception()
-    #     raise e
+        return (
+            json.dumps({"success": True, "message": "ingest sprinklr data completed"}),
+            200,
+            {"ContentType": "application/json"},
+        )
+    except Exception as e:
+        logger.error(f"Main Crashed. Error: {e}")
+        error_reporting_client.report_exception()
+        raise e
 
 
 @app.route("/success")
