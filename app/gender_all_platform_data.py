@@ -11,7 +11,9 @@ from utils.sprinklr_utils import (
 )
 from utils.utils import get_logger
 from utils.gbq_client import check_and_update_table
+from google.cloud import error_reporting
 
+error_reporting_client = error_reporting.Client(service="sprinklr_data_ingestion")
 
 logger = get_logger("INGEST_GENER_ALL_PLATFORM_DATA")
 
@@ -76,8 +78,14 @@ class ProceedGenderAllPlatform:
                     page_number += 1
                 else:
                     print(
-                        f"Sprinklr table has not more datas with given time at page {page_number}".format(page_number=page_number)
+                        f"Sprinklr table has not more datas with given time at page {page_number}".format(
+                            page_number=page_number
+                        )
                     )
                     row_status = False
+            
+            else:
+                logger.error("could not connect sprinklr api")
+                error_reporting_client.report_exception()
 
         check_and_update_table(self.project_id, temp_table, destination_table)

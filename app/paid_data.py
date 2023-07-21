@@ -114,4 +114,6 @@ class ProceedPaidData:
                     # log to bq
             else:
                 logger.error("could not connect sprinklr api")
+                error_reporting_client.report_exception()
+
         check_and_update_table(self.project_id, temp_table, destination_table)

@@ -85,7 +85,7 @@ def ingest_sprinklr_data():
     except Exception as e:
         logger.error(f"Main Crashed. Error: {e}")
         error_reporting_client.report_exception()
-        raise e
+        
 
 
 @app.route("/success")

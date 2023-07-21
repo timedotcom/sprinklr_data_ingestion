@@ -152,7 +152,7 @@ class ProceedSocialData:
             else:
                 logger.error("could not connect sprinklr api")
                 error_reporting_client.report_exception()
-                raise e
+                
                 
 
         check_and_update_table(self.project_id, temp_table, destination_table)
