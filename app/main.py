@@ -42,14 +42,22 @@ def ingest_sprinklr_data():
 
     current_day_epoch_time = int(target_datetime.timestamp())
     # for startting time we are pulling last 6 moth data so delta days here 180
-    start_day = (
-        datetime.datetime.now(timezone) - datetime.timedelta(days=180)
-    ).replace(hour=0, minute=0, second=0, microsecond=0)
-    start_day_epoch_time = int(start_day.timestamp())
+    # start_day = (
+    #     datetime.datetime.now(timezone) - datetime.timedelta(days=180)
+    # ).replace(hour=0, minute=0, second=0, microsecond=0)
+    # start_day_epoch_time = int(start_day.timestamp())
 
     api_token = creds["api_token"]
     api_key = creds["api_key"]
-    start_time = f"{start_day_epoch_time}000"
+
+    start_date = datetime.datetime(2023, 1, 1, tzinfo=timezone)
+
+    start_time_epoch = int(start_date.timestamp()) * 1000  # Multiply by 1000 to convert to milliseconds
+
+    start_time = str(start_time_epoch)
+
+
+    # start_time = f"{start_day_epoch_time}000"
     end_time = f"{current_day_epoch_time}000"
     logger.info("start time {start_time}".format(start_time=start_time))
     logger.info("end time {end_time}".format(end_time=end_time))
@@ -76,7 +84,7 @@ def ingest_sprinklr_data():
         ProceedGenderAllPlatform(
             header, start_time, end_time, project_id, bq_client
         ).ingest_gender_all_platform_data()
-
+        logger.info("completed all")
         return (
             json.dumps({"success": True, "message": "ingest sprinklr data completed"}),
             200,
@@ -85,7 +93,6 @@ def ingest_sprinklr_data():
     except Exception as e:
         logger.error(f"Main Crashed. Error: {e}")
         error_reporting_client.report_exception()
-        
 
 
 @app.route("/success")
