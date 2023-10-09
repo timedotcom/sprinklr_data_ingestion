@@ -41,21 +41,33 @@ def ingest_sprinklr_data():
     target_datetime = datetime.datetime.combine(current_day, target_time)
 
     current_day_epoch_time = int(target_datetime.timestamp())
-    # for startting time we are pulling last 6 moth data so delta days here 180
-    # start_day = (
-    #     datetime.datetime.now(timezone) - datetime.timedelta(days=180)
-    # ).replace(hour=0, minute=0, second=0, microsecond=0)
-    # start_day_epoch_time = int(start_day.timestamp())
+   
+    logger.info("accessing access toekn")
+    token_url = 'https://api2.sprinklr.com/oauth/token'
+    api_key = creds['client_id']
+    data = {
+        'grant_type': 'client_credentials',
+        'client_id': api_key,
+        'client_secret': creds['client_secret']
+    }
+    response = requests.post(token_url, data=data, headers={'Content-Type': 'application/x-www-form-urlencoded'})
+    if response.status_code == 200:
+        token_data = response.json()
+        access_token = token_data.get('access_token')
+        logger.info("access token generated successfully")
 
-    api_token = creds["api_token"]
-    api_key = creds["api_key"]
+    else:
+        logger.error("issue to generate access code")
 
-    start_date = datetime.datetime(2023, 1, 1, tzinfo=timezone)
+    api_token = access_token
 
-    start_time_epoch = int(start_date.timestamp()) * 1000  # Multiply by 1000 to convert to milliseconds
+    start_date = timezone.localize(datetime.datetime(2023, 1, 1, 0, 0, 0))
+
+    start_time_epoch = (
+        int(start_date.timestamp()) * 1000
+    )  # Multiply by 1000 to convert to milliseconds
 
     start_time = str(start_time_epoch)
-
 
     # start_time = f"{start_day_epoch_time}000"
     end_time = f"{current_day_epoch_time}000"
