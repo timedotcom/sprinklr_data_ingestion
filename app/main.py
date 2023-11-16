@@ -39,7 +39,7 @@ def process_social_data(header, start_time, end_time, project_id, bq_client):
 def process_paid_data(header, start_time, end_time, project_id, bq_client):
     ProceedPaidData(header, start_time, end_time, project_id, bq_client).ingest_paid_data()
 
-def porcess_age_all_data(header, start_time, end_time, project_id, bq_client):
+def process_age_all_data(header, start_time, end_time, project_id, bq_client):
     ProceedAgeAllPlatform(header, start_time, end_time, project_id, bq_client).ingest_age_all_platform_data()
 
 def process_gender_all_data(header, start_time, end_time, project_id, bq_client):
@@ -96,9 +96,9 @@ def ingest_sprinklr_data():
     }
     try:
         #proceed all in thread 
-        thread1 = threading.Thread(target=process_social_data, args=(header, start_time, end_time, project_id, bq_client))
-        thread2 = threading.Thread(target=process_paid_data, args=(header, start_time, end_time, project_id, bq_client))
-        thread3 = threading.Thread(target=porcess_age_all_data, args=(header, start_time, end_time, project_id, bq_client))
+        thread1 = threading.Thread(target=process_paid_data, args=(header, start_time, end_time, project_id, bq_client))
+        thread2 = threading.Thread(target=process_social_data, args=(header, start_time, end_time, project_id, bq_client))
+        thread3 = threading.Thread(target=process_age_all_data, args=(header, start_time, end_time, project_id, bq_client))
         thread4 = threading.Thread(target=process_gender_all_data, args=(header, start_time, end_time, project_id, bq_client))
 
         # Start all threads
