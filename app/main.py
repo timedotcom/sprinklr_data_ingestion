@@ -7,6 +7,7 @@ from utils.utils import download_creds, get_logger
 import time
 import datetime
 import pytz
+import threading
 
 from google.cloud import error_reporting
 
@@ -30,6 +31,19 @@ timezone = pytz.timezone("America/New_York")
 
 bq_client = bigquery.Client()
 creds = download_creds("sprinklr", 1)
+
+
+def process_social_data(header, start_time, end_time, project_id, bq_client):
+    ProceedSocialData(header, start_time, end_time, project_id, bq_client).ingest_social_data()
+
+def process_paid_data(header, start_time, end_time, project_id, bq_client):
+    ProceedPaidData(header, start_time, end_time, project_id, bq_client).ingest_paid_data()
+
+def porcess_age_all_data(header, start_time, end_time, project_id, bq_client):
+    ProceedAgeAllPlatform(header, start_time, end_time, project_id, bq_client).ingest_age_all_platform_data()
+
+def process_gender_all_data(header, start_time, end_time, project_id, bq_client):
+    ProceedGenderAllPlatform(header, start_time, end_time, project_id, bq_client).ingest_gender_all_platform_data()
 
 
 @app.route("/run", methods=["POST"])
@@ -81,21 +95,23 @@ def ingest_sprinklr_data():
         "endTime": end_time,
     }
     try:
-        ProceedSocialData(
-            header, start_time, end_time, project_id, bq_client
-        ).ingest_social_data()
+        #proceed all in thread 
+        thread1 = threading.Thread(target=process_social_data, args=(header, start_time, end_time, project_id, bq_client))
+        thread2 = threading.Thread(target=process_paid_data, args=(header, start_time, end_time, project_id, bq_client))
+        thread3 = threading.Thread(target=porcess_age_all_data, args=(header, start_time, end_time, project_id, bq_client))
+        thread4 = threading.Thread(target=process_gender_all_data, args=(header, start_time, end_time, project_id, bq_client))
 
-        ProceedPaidData(
-            header, start_time, end_time, project_id, bq_client
-        ).ingest_paid_data()
+        # Start all threads
+        thread1.start()
+        thread2.start()
+        thread3.start()
+        thread4.start()
 
-        ProceedAgeAllPlatform(
-            header, start_time, end_time, project_id, bq_client
-        ).ingest_age_all_platform_data()
-
-        ProceedGenderAllPlatform(
-            header, start_time, end_time, project_id, bq_client
-        ).ingest_gender_all_platform_data()
+        # Wait for all threads to complete
+        thread1.join()
+        thread2.join()
+        thread3.join()
+        thread4.join()
         logger.info("completed all")
         return (
             json.dumps({"success": True, "message": "ingest sprinklr data completed"}),
